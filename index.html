@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="so">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D Printing & Machine Learning Management System</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar">
+        <div class="sidebar-brand">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+            <div>3D Print <span>AI Core</span></div>
+        </div>
+
+        <div class="nav-section-title">3D Printing Management</div>
+        <ul class="sidebar-nav">
+            <li><a data-target="tab-printers"><span>🖨️</span> Daabacayaasha (Printers)</a></li>
+            <li><a data-target="tab-models"><span>📐</span> Moodallada 3D (Models)</a></li>
+            <li><a data-target="tab-jobs"><span>⏱️</span> Shaqooyinka (Print Jobs)</a></li>
+            <li><a data-target="tab-filaments"><span>🧵</span> Qalabka (Filaments)</a></li>
+        </ul>
+
+        <div class="nav-section-title">Machine Learning (7-da Steps)</div>
+        <ul class="sidebar-nav">
+            <li><a data-target="tab-ml-dashboard" class="active"><span>📊</span> ML Dashboard</a></li>
+            <li><a data-target="tab-ml-data"><span>💾</span> 1. Xogta ML (Collect Data)</a></li>
+            <li><a data-target="tab-ml-clean"><span>🧹</span> 2. Nadiifinta Xogta (Clean)</a></li>
+            <li><a data-target="tab-ml-selection"><span>🎯</span> 3. Xulashada Model-ka (Select)</a></li>
+            <li><a data-target="tab-ml-training"><span>⚡</span> 4. Tababarka Model-ka (Train)</a></li>
+            <li><a data-target="tab-ml-evaluation"><span>📈</span> 5. Tijaabinta & Qiimaynta (Eval)</a></li>
+            <li><a data-target="tab-ml-prediction"><span>🔮</span> 6. Saadaasha ML (Predict)</a></li>
+            <li><a data-target="tab-ml-monitoring"><span>📡</span> 7. La Socodka Model-ka (Monitor)</a></li>
+        </ul>
+    </aside>
+
+    <!-- Main Content Area -->
+    <div class="main-wrapper">
+        <header class="topbar">
+            <div class="page-title">
+                <h1>Nidaamka Maamulka 3D Printing & Machine Learning</h1>
+                <p>Nidaam casri ah oo ku shaqaynaya Algorithms-ka Machine Learning ee dhabta ah</p>
+            </div>
+            <div class="topbar-actions">
+                <button class="btn btn-outline" onclick="triggerSeedDemo()">+ Ku dar Xog Demo ah (45 Saf)</button>
+                <button class="btn btn-primary" onclick="navigateToStep(4)">⚡ Tababar Dhammaan Moodallada</button>
+            </div>
+        </header>
+
+        <main class="content-container">
+
+            <!-- 1. ML DASHBOARD TAB -->
+            <div id="tab-ml-dashboard" class="tab-content active">
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Dhammaystirka 7-da Talaabo ee Machine Learning Pipeline</h3>
+                        <span id="dash-progress-pct" style="font-size: 1.2rem; font-weight: bold; color: var(--primary);">0%</span>
+                    </div>
+                    <div class="progress-bar-wrap">
+                        <div id="dash-progress-fill" class="progress-bar-fill" style="width: 0%;"></div>
+                    </div>
+                    <p id="dash-progress-text" style="font-size: 0.85rem; color: var(--muted);">0 ka mid ah 7 talaabo ayaa dhammaatay</p>
+                </div>
+
+                <div class="grid-cols-4">
+                    <div class="card stat-card">
+                        <div class="stat-icon">📁</div>
+                        <div class="stat-info">
+                            <h4>Wadarta Xogta (Dataset)</h4>
+                            <div class="stat-number" id="stat-total-data">0</div>
+                        </div>
+                    </div>
+                    <div class="card stat-card">
+                        <div class="stat-icon" style="background: var(--success-light); color: var(--success);">✓</div>
+                        <div class="stat-info">
+                            <h4>Xogta Dhabta ah (Real)</h4>
+                            <div class="stat-number" id="stat-real-data">0</div>
+                        </div>
+                    </div>
+                    <div class="card stat-card">
+                        <div class="stat-icon" style="background: var(--warning-light); color: var(--warning);">🏷️</div>
+                        <div class="stat-info">
+                            <h4>Xogta Tusaalaha ah (Demo)</h4>
+                            <div class="stat-number" id="stat-demo-data">0</div>
+                        </div>
+                    </div>
+                    <div class="card stat-card">
+                        <div class="stat-icon" style="background: #e0e7ff; color: #4338ca;">🤖</div>
+                        <div class="stat-info">
+                            <h4>Moodallada Firfircoon</h4>
+                            <div class="stat-number" id="stat-active-models">0</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Xaaladda Tooska ah ee 7-da Talaabo (ML Lifecycle Status)</h3>
+                        <button class="btn btn-outline btn-sm" onclick="loadDashboard()">Cusboonaysii ↻</button>
+                    </div>
+                    <div class="steps-pipeline" id="dash-steps-list">
+                        <!-- Populated by JS -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- 2. ML DATA COLLECTION TAB -->
+            <div id="tab-ml-data" class="tab-content">
+                <div class="card">
+                    <div class="card-header">
+                        <div>
+                            <h3>Step 1: Ururinta Xogta 3D Printing (Data Collection)</h3>
+                            <small class="text-muted">Table: MachineLearningDataset - Xogta print jobs-ka dhabta ah, CSV imports iyo history-ga</small>
+                        </div>
+                        <div style="display:flex; gap:10px;">
+                            <button class="btn btn-outline btn-sm" onclick="triggerSeedDemo()">+ Ku shub Sample Demo (45)</button>
+                            <button class="btn btn-outline btn-sm" onclick="openModal('modal-import-csv')">📁 Soo geli CSV</button>
+                            <button class="btn btn-primary btn-sm" onclick="openModal('modal-add-data')">+ Geli Xog Manual ah</button>
+                        </div>
+                    </div>
+
+                    <div class="grid-cols-4" style="margin-bottom: 18px;">
+                        <div class="card"><div class="stat-info"><h4>Wadarta Guud</h4><div class="stat-number" id="dataset-total-count">0</div></div></div>
+                        <div class="card"><div class="stat-info"><h4>Xogta Dhabta ah</h4><div class="stat-number text-success" id="dataset-real-count">0</div></div></div>
+                        <div class="card"><div class="stat-info"><h4>Xogta Tusaalaha (Demo)</h4><div class="stat-number text-warning" id="dataset-demo-count">0</div></div></div>
+                        <div class="card"><div class="stat-info"><h4>Heerka Diyaarsanaanta</h4><div style="font-weight: bold; margin-top:6px;" id="dataset-status-badge">-</div></div></div>
+                    </div>
+
+                    <div class="table-responsive">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Nooca</th>
+                                    <th>Daabacaha</th>
+                                    <th>Filament</th>
+                                    <th>Volume</th>
+                                    <th>Speed</th>
+                                    <th>Layer H.</th>
+                                    <th>Infill</th>
+                                    <th>Est. Time</th>
+                                    <th>Actual Time</th>
+                                    <th>Filament Used</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody id="dataset-table-body">
+                                <tr><td colspan="12" style="text-align:center; color: var(--muted);">Xogta way soo socotaa...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 3. DATA CLEANING TAB -->
+            <div id="tab-ml-clean" class="tab-content">
+                <div class="card">
+                    <div class="card-header">
+                        <div>
+                            <h3>Step 2: Diyaarinta iyo Nadiifinta Xogta (Data Cleaning & Preprocessing)</h3>
+                            <small class="text-muted">Module: ml/data_preprocessing.py - Pipeline ka saaraya xogta khaladka ah, null values, iyo duplicates</small>
+                        </div>
+                        <button class="btn btn-success" id="btn-run-clean" onclick="triggerDataCleaning()">Nadiifi Xogta Hadda (Run Cleaning)</button>
+                    </div>
+
+                    <div class="alert alert-info">
+                        <strong>Sharciyada Xaqiijinta (Validation Rules):</strong>
+                        Print Speed waa inuu ka weyn yahay 0 mm/s; Layer Height > 0 mm; Infill u dhexeeya 0% - 100%; Model Volume > 0 cm³; Heerkulka nozzle 150-320°C.
+                    </div>
+
+                    <div id="clean-results-box" style="display:none;">
+                        <div id="clean-result-summary"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 4. MODEL SELECTION TAB -->
+            <div id="tab-ml-selection" class="tab-content">
+                <div class="card">
+                    <div class="card-header">
+                        <div>
+                            <h3>Step 3: Xulashada Model-ka (Model Selection & Algorithm Comparison)</h3>
+                            <small class="text-muted">Module: ml/model_selection.py - Isbarbardhigga Linear Regression, Random Forest, iyo Gradient Boosting</small>
+                        </div>
+                    </div>
+
+                    <div class="form-row" style="align-items: flex-end; margin-bottom: 20px;">
+                        <div class="form-group" style="max-width: 320px;">
+                            <label>Dooro Hawsha ML (Task Type):</label>
+                            <select id="select-task-type" class="form-control">
+                                <option value="regression">Regression (Waqtiga & Isticmaalka Filament-ka)</option>
+                                <option value="classification">Classification (Khatarta Fashilka Daabacaadda)</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <button class="btn btn-primary" id="btn-run-selection" onclick="triggerModelSelection()">Bilow Isbarbardhigga (Compare Models)</button>
+                        </div>
+                    </div>
+
+                    <div id="selection-results-box" style="display: none;">
+                        <div id="selection-results-content"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 5. MODEL TRAINING TAB -->
+            <div id="tab-ml-training" class="tab-content">
+                <div class="card">
+                    <div class="card-header">
+                        <div>
+                            <h3>Step 4: Tababarka Moodallada (Model Training Pipeline)</h3>
+                            <small class="text-muted">Module: ml/train_model.py - Tababarka scikit-learn algorithms & keydinta ml/models/</small>
+                        </div>
+                    </div>
+
+                    <div id="training-feedback-box" class="alert" style="display: none;"></div>
+
+                    <div class="grid-cols-3">
+                        <div class="card">
+                            <h4>Saadaasha Waqtiga (Print Time)</h4>
+                            <p style="font-size:0.84rem; color:var(--muted); margin: 8px 0 14px;">Tababar model saadaaliya inta daqiiqo ee daabacaaddu qaadanayso.</p>
+                            <button class="btn btn-primary btn-sm" id="btn-train-time" onclick="triggerTraining('time')">⚡ Tababar Waqtiga</button>
+                        </div>
+                        <div class="card">
+                            <h4>Isticmaalka Filament-ka</h4>
+                            <p style="font-size:0.84rem; color:var(--muted); margin: 8px 0 14px;">Tababar model saadaaliya tirada grams ee filament la isticmaali doono.</p>
+                            <button class="btn btn-primary btn-sm" id="btn-train-filament" onclick="triggerTraining('filament')">⚡ Tababar Filament</button>
+                        </div>
+                        <div class="card">
+                            <h4>Khatarta Fashilka (Failure Risk)</h4>
+                            <p style="font-size:0.84rem; color:var(--muted); margin: 8px 0 14px;">Tababar classifier saadaaliya suurtogalnimada fashilka.</p>
+                            <button class="btn btn-primary btn-sm" id="btn-train-failure" onclick="triggerTraining('failure')">⚡ Tababar Fashilka</button>
+                        </div>
+                    </div>
+
+                    <h4 style="margin: 20px 0 10px;">Moodallada Hadda Diyaar Ah (Trained Models Registry)</h4>
+                    <div class="table-responsive">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Model Name</th>
+                                    <th>Algorithm</th>
+                                    <th>Version</th>
+                                    <th>Bartilmaameedka (Target)</th>
+                                    <th>Dataset Size</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody id="trained-models-tbody">
+                                <tr><td colspan="6" style="text-align:center;">Xogta moodallada way soo socotaa...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 6. MODEL EVALUATION TAB -->
+            <div id="tab-ml-evaluation" class="tab-content">
+                <div class="card">
+                    <div class="card-header">
+                        <div>
+                            <h3>Step 5: Tijaabinta iyo Qiimaynta Moodallada (Evaluation & Metrics)</h3>
+                            <small class="text-muted">Module: ml/evaluate_model.py - MAE, RMSE, R² Score, Accuracy, Precision, Recall, Confusion Matrix</small>
+                        </div>
+                        <button class="btn btn-outline btn-sm" onclick="loadEvaluationTab()">Cusboonaysii Qiimaynta ↻</button>
+                    </div>
+
+                    <div id="evaluations-container">
+                        <!-- Populated by JS -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- 7. PREDICTIONS TAB -->
+            <div id="tab-ml-prediction" class="tab-content">
+                <div class="card">
+                    <div class="card-header">
+                        <div>
+                            <h3>Step 6: Ku Xiridda iyo Saadaasha Tooska ah (Deployment & Prediction)</h3>
+                            <small class="text-muted">API: POST /api/ml/predict-all - Soo geli cabbiraadaha si aad u hesho saadaal dhab ah</small>
+                        </div>
+                    </div>
+
+                    <form onsubmit="triggerLivePrediction(event)">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Mugga Moodalka (Volume cm³):</label>
+                                <input type="number" step="0.1" name="volume" class="form-control" value="25.5" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Miisaanka Qiyaasta (Weight g):</label>
+                                <input type="number" step="0.1" name="weight" class="form-control" value="20.0" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Nooca Filament-ka:</label>
+                                <select name="filament_type" class="form-control">
+                                    <option value="PLA">PLA</option>
+                                    <option value="PETG">PETG</option>
+                                    <option value="ABS">ABS</option>
+                                    <option value="TPU">TPU</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Daabacaha (Printer Model):</label>
+                                <select name="printer_model" id="pred-printer" class="form-control">
+                                    <option value="Ender 3 V2">Creality Ender 3 V2</option>
+                                    <option value="Prusa i3 MK3S+">Prusa i3 MK3S+</option>
+                                    <option value="Bambu X1-Carbon">Bambu Lab X1-Carbon</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Xawaaraha Daabacaadda (Speed mm/s):</label>
+                                <input type="number" name="print_speed" class="form-control" value="60" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Dhumucda Lakabka (Layer Height mm):</label>
+                                <input type="number" step="0.02" name="layer_height" class="form-control" value="0.2" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Cufnaanta Gudaha (Infill %):</label>
+                                <input type="number" name="infill" class="form-control" value="20" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Heerkulka Nozzle (°C):</label>
+                                <input type="number" name="nozzle_temp" class="form-control" value="205" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Heerkulka Sariirta (°C):</label>
+                                <input type="number" name="bed_temp" class="form-control" value="60" required>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label><input type="checkbox" name="support_enabled"> Ma u baahan yahay Taageero (Support Structures)?</label>
+                        </div>
+
+                        <button type="submit" id="btn-predict-now" class="btn btn-primary">Xisaabi Saadaasha ML (Predict)</button>
+                    </form>
+
+                    <div id="live-prediction-results" style="display:none; margin-top: 24px;">
+                        <h4 style="margin-bottom: 14px;">Natiijada Saadaasha (Prediction Results):</h4>
+                        <div class="grid-cols-3">
+                            <div class="prediction-result-card">
+                                <h5>⏱️ Waqtiga Daabacaadda</h5>
+                                <div id="pred-time-output"></div>
+                            </div>
+                            <div class="prediction-result-card">
+                                <h5>🧵 Isticmaalka Filament-ka</h5>
+                                <div id="pred-filament-output"></div>
+                            </div>
+                            <div class="prediction-result-card">
+                                <h5>⚠️ Khatarta Fashilka (Failure Risk)</h5>
+                                <div id="pred-failure-output"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 8. MODEL MONITORING TAB -->
+            <div id="tab-ml-monitoring" class="tab-content">
+                <div class="card">
+                    <div class="card-header">
+                        <div>
+                            <h3>Step 7: La Socodka iyo Hagaajinta Model-ka (Model Monitoring & Drift)</h3>
+                            <small class="text-muted">Module: ml/model_monitoring.py - La socodka khaladka, isbeddelka xogta (data drift), iyo baahida dib u tababarka</small>
+                        </div>
+                        <button class="btn btn-outline btn-sm" onclick="loadMonitoringTab()">Cusboonaysii ↻</button>
+                    </div>
+
+                    <div class="grid-cols-2">
+                        <div class="card">
+                            <h4>Baadhitaanka Dib u Tababarka (Retraining Assessment)</h4>
+                            <div id="mon-retrain-status" style="margin-top: 12px;"></div>
+                        </div>
+                        <div class="card">
+                            <h4>Baadhitaanka Isbeddelka Xogta (Data Drift Detection)</h4>
+                            <div id="mon-drift-status" style="margin-top: 12px;"></div>
+                        </div>
+                    </div>
+
+                    <h4 style="margin: 20px 0 10px;">Taariikhda Saadaasha iyo Isbarbardhigga Qiimaha Dhabta ah (Predictions vs Actuals)</h4>
+                    <div class="table-responsive">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Nooca Saadaasha</th>
+                                    <th>Waxa La Saadaaliyay</th>
+                                    <th>Qiimaha Dhabta ah (Actual)</th>
+                                    <th>Khaladka (Error)</th>
+                                    <th>Taariikhda</th>
+                                    <th>Ficil (Action)</th>
+                                </tr>
+                            </thead>
+                            <tbody id="mon-predictions-tbody">
+                                <tr><td colspan="7" style="text-align:center;">Xogta kormeerka way soo socotaa...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 9. PRINTERS TAB -->
+            <div id="tab-printers" class="tab-content">
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Daabacayaasha Ku Xiran (Connected 3D Printers)</h3>
+                        <span class="badge badge-success">Telemetry Firfircoon</span>
+                    </div>
+                    <div class="grid-cols-2" id="printers-grid"></div>
+                </div>
+            </div>
+
+            <!-- 10. PRINT JOBS TAB -->
+            <div id="tab-jobs" class="tab-content">
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Shaqooyinka Daabacaadda (Print Jobs Queue & Execution)</h3>
+                        <small class="text-muted">Shaqo kasta oo dhammaata ama fashilanta waxay si toos ah ugu wareegtaa Dataset-ka Machine Learning!</small>
+                    </div>
+                    <div class="table-responsive">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Magaca Shaqada</th>
+                                    <th>Daabacaha</th>
+                                    <th>Xaaladda (Status)</th>
+                                    <th>Waqtiga (Est / Act)</th>
+                                    <th>Filament (Est / Act)</th>
+                                    <th>Taariikhda</th>
+                                    <th>Ficil</th>
+                                </tr>
+                            </thead>
+                            <tbody id="jobs-tbody"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 11. MODELS TAB -->
+            <div id="tab-models" class="tab-content">
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Liiska Moodallada 3D (3D Models Catalog)</h3>
+                    </div>
+                    <div class="grid-cols-3" id="models-grid"></div>
+                </div>
+            </div>
+
+            <!-- 12. FILAMENTS TAB -->
+            <div id="tab-filaments" class="tab-content">
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Kaydka Qalabka (Filament Spools Inventory)</h3>
+                    </div>
+                    <div class="grid-cols-2" id="filaments-grid"></div>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <!-- MODAL: Geli Xog Manual ah -->
+    <div id="modal-add-data" class="modal-overlay">
+        <div class="modal-box">
+            <div class="modal-header">
+                <h3>Ku dar Xog Cusub Dataset-ka</h3>
+                <button class="modal-close" onclick="closeModal('modal-add-data')">&times;</button>
+            </div>
+            <form onsubmit="submitManualRecord(event)">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Printer Model:</label>
+                        <input type="text" name="printer_model" class="form-control" value="Ender 3 V2" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Filament Type:</label>
+                        <select name="filament_type" class="form-control">
+                            <option value="PLA">PLA</option>
+                            <option value="PETG">PETG</option>
+                            <option value="ABS">ABS</option>
+                            <option value="TPU">TPU</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Model Volume (cm³):</label>
+                        <input type="number" step="0.1" name="model_volume" class="form-control" value="18.5" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Model Weight (g):</label>
+                        <input type="number" step="0.1" name="model_weight" class="form-control" value="15.0" required>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Print Speed (mm/s):</label>
+                        <input type="number" name="print_speed" class="form-control" value="50" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Layer Height (mm):</label>
+                        <input type="number" step="0.02" name="layer_height" class="form-control" value="0.2" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Infill (%):</label>
+                        <input type="number" name="infill_percentage" class="form-control" value="20" required>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Nozzle Temp (°C):</label>
+                        <input type="number" name="nozzle_temperature" class="form-control" value="200" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Bed Temp (°C):</label>
+                        <input type="number" name="bed_temperature" class="form-control" value="60" required>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Estimated Time (min):</label>
+                        <input type="number" step="0.1" name="estimated_print_time" class="form-control" value="70" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Actual Print Time (min):</label>
+                        <input type="number" step="0.1" name="actual_print_time" class="form-control" value="73">
+                    </div>
+                    <div class="form-group">
+                        <label>Filament Used (g):</label>
+                        <input type="number" step="0.1" name="filament_used" class="form-control" value="15.8">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Xaaladda Daabacaadda:</label>
+                        <select name="print_status" class="form-control">
+                            <option value="completed">Guul (Completed)</option>
+                            <option value="failed">Fashil (Failed)</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label><input type="checkbox" name="support_enabled"> Support Enabled</label>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 10px;">Kaydi Xogta Dataset-ka</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL: CSV Import -->
+    <div id="modal-import-csv" class="modal-overlay">
+        <div class="modal-box">
+            <div class="modal-header">
+                <h3>Soo geli CSV File Xog 3D Printing ah</h3>
+                <button class="modal-close" onclick="closeModal('modal-import-csv')">&times;</button>
+            </div>
+            <form onsubmit="submitCsvImport(event)">
+                <div class="form-group">
+                    <label>Dooro CSV fayl:</label>
+                    <input type="file" id="csv-file-input" accept=".csv" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label><input type="checkbox" id="csv-is-demo"> U calaamadee Demo / Tusaale ahaan (is_demo=1)</label>
+                </div>
+                <p style="font-size: 0.8rem; color: var(--muted); margin-bottom: 14px;">
+                    CSV-gu waa inuu lahaadaa tiirarka: model_volume, model_weight, filament_type, print_speed, layer_height, infill_percentage, nozzle_temperature, bed_temperature, actual_print_time, print_status.
+                </p>
+                <button type="submit" class="btn btn-primary" style="width: 100%;">Soo Rari CSV-ga</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="/static/js/app.js"></script>
+</body>
+</html>
