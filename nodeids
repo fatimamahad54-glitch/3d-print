@@ -1,0 +1,15 @@
+[
+  "tests/test_api_endpoints.py::test_core_3d_printers",
+  "tests/test_api_endpoints.py::test_data_statistics_endpoint",
+  "tests/test_api_endpoints.py::test_health_check",
+  "tests/test_api_endpoints.py::test_monitoring_report_endpoint",
+  "tests/test_api_endpoints.py::test_prediction_endpoint",
+  "tests/test_api_endpoints.py::test_steps_status_endpoint",
+  "tests/test_ml_system.py::test_data_collection",
+  "tests/test_ml_system.py::test_data_preprocessing",
+  "tests/test_ml_system.py::test_model_evaluation",
+  "tests/test_ml_system.py::test_model_selection",
+  "tests/test_ml_system.py::test_model_training",
+  "tests/test_ml_system.py::test_monitoring",
+  "tests/test_ml_system.py::test_predictions"
+]
